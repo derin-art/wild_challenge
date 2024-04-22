@@ -6,7 +6,9 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   return (
-    <div className={` ${inter.className}`}>
+    <div
+      className={`w-full h-full overflow-hidden hideScroll ${inter.className}`}
+    >
       <ScrollTest></ScrollTest>
     </div>
   );

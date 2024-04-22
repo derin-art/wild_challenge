@@ -1,6 +1,7 @@
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { AnimatePresence, motion } from "framer-motion";
 import { gsap } from "gsap";
+import ImageArray from "./ImageArray";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -65,9 +66,9 @@ export default function ScrollTest() {
     inViewImages.now + 2,
   ]);
   const assets = [
-    { number: 1, style: "top-[40px] right-[40px]" },
-    { number: 2, style: " w-[500px] h-[600px]" },
-    { number: 3, style: "bottom-[40px] left-[40px]" },
+    { number: 1, style: "top-[16px] right-[32px]" },
+    { number: 2, style: " " },
+    { number: 3, style: "bottom-[16px] left-[16px]" },
   ];
   const [scrollDir, setScrollDir] = useState({
     reg: "scrolling down",
@@ -246,9 +247,20 @@ export default function ScrollTest() {
     }
   };
 
+  const renderCorrectImage = (imageIndex: number, pageNumber: number) => {
+    if (imageIndex === 0) {
+      return ImageArray[pageNumber].right;
+    } else if (imageIndex === 1) {
+      return ImageArray[pageNumber].center;
+    }
+    if (imageIndex === 2) {
+      return ImageArray[pageNumber].left;
+    }
+  };
+
   return (
-    <div ref={cotainerRef} className="flex w-fit containerr ">
-      <div className="w-screen h-screen absolute z-30 flex items-center justify-center ">
+    <div ref={cotainerRef} className="flex w-fit containerr hideScroll">
+      <div className="w-screen h-screen overflow-y-hidden hideScroll absolute z-30 flex items-center justify-center overflow-hidden">
         <div className="absolute top-[10px] right-[40px] text-black">
           {scrollDir.reg}
           {scrollDir.art}
@@ -257,44 +269,50 @@ export default function ScrollTest() {
           {images.map((item, index) => {
             return (
               <motion.div
-                className={` w-[300px] h-[400px]   z-30 mx-auto ${assets[index].style} absolute overflow-hidden`}
+                className={` ${
+                  index === 1 ? "w-[512px] h-[680px]" : "w-[248px] h-[330px] "
+                }  z-30 mx-auto ${
+                  assets[index].style
+                } absolute overflow-hidden rounded-[10px]`}
                 key={inViewImages.now + `${index}+2`}
               >
                 <motion.img
-                  src={imageAssets[inViewImages.now - 1].url}
+                  src={renderCorrectImage(index, inViewImages.now - 1)?.src}
                   key={inViewImages.now + `${index}`}
                   transition={{
-                    duration: 0.4 * (index + 1),
-                    delay: 0.2 * (index * 1),
-                    ease: "easeInOut",
+                    duration: 0.2 * (4 - index),
+
+                    ease: [0.645, 0.045, 0.355, 1],
                   }}
                   initial={
                     scrollDir.art === "scrolling down"
-                      ? { x: 100, y: -100 }
-                      : { x: -100, y: 100 }
+                      ? { x: 400, y: -400 }
+                      : { x: -400, y: 400 }
                   }
                   animate={{ x: 0, y: 0 }}
                   exit={
                     scrollDir.reg === "scrolling down"
                       ? {
                           x: "-100%",
-                          y: "100%",
+                          y: "50%",
 
                           transition: {
-                            duration: 0.3 * (index + 2),
-                            delay: 0.2 * (index * 1),
+                            duration: 0.2 * (2 + index),
+
+                            ease: [0.645, 0.045, 0.355, 1],
                           },
                         }
                       : {
                           x: "100%",
-                          y: "-100%",
+                          y: "-50%",
                           transition: {
-                            duration: 0.3 * (index + 2),
-                            delay: 0.2 * (index * 1),
+                            duration: 0.2 * (index + 2),
+
+                            ease: [0.645, 0.045, 0.355, 1],
                           },
                         }
                   }
-                  className={` w-[300px] h-[400px] opacity-[0.3]  z-30 mx-auto ${assets[index].style} absolute`}
+                  className={` w-fit z-30 mx-auto  absolute`}
                 ></motion.img>
               </motion.div>
             );
@@ -305,7 +323,7 @@ export default function ScrollTest() {
         return (
           <div
             key={index}
-            className={`bg-blue-400 border box w-screen h-screen flex items-center justify-center`}
+            className={`bg-blue-400  box w-screen hideScroll h-screen flex items-center justify-center`}
           >
             <motion.div
               key={index}

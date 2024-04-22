@@ -259,8 +259,11 @@ export default function ScrollTest() {
   };
 
   return (
-    <div ref={cotainerRef} className="flex w-fit containerr hideScroll">
-      <div className="w-screen h-screen overflow-y-hidden hideScroll absolute z-30 flex items-center justify-center overflow-hidden">
+    <div
+      ref={cotainerRef}
+      className="flex w-fit containerr scrollbar-alt scrollbar"
+    >
+      <div className="w-screen  h-screen overflow-y-hidden scrollbar-alt scrollbar absolute z-30 flex items-center justify-center overflow-hidden">
         <div className="absolute top-[10px] right-[40px] text-black">
           {scrollDir.reg}
           {scrollDir.art}
@@ -282,7 +285,7 @@ export default function ScrollTest() {
                   transition={{
                     duration: 0.2 * (4 - index),
 
-                    ease: [0.645, 0.045, 0.355, 1],
+                    ease: [0.345, 0.045, 0.355, 1],
                   }}
                   initial={
                     scrollDir.art === "scrolling down"
@@ -299,7 +302,7 @@ export default function ScrollTest() {
                           transition: {
                             duration: 0.2 * (2 + index),
 
-                            ease: [0.645, 0.045, 0.355, 1],
+                            ease: [0.345, 0.045, 0.355, 1],
                           },
                         }
                       : {
@@ -308,7 +311,7 @@ export default function ScrollTest() {
                           transition: {
                             duration: 0.2 * (index + 2),
 
-                            ease: [0.645, 0.045, 0.355, 1],
+                            ease: [0.345, 0.045, 0.355, 1],
                           },
                         }
                   }

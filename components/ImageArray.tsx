@@ -14,9 +14,39 @@ import ImageFiveMain from "../public/images/image05@2x.jpg";
 import ImageFive from "../public/images/image05.jpg";
 
 export default [
-  { left: ImageFive, center: ImageOneMain, right: ImageTwo },
-  { left: ImageOne, center: ImageTwoMain, right: ImageThree },
-  { left: ImageTwo, center: ImageThreeMain, right: ImageFour },
-  { left: ImageThree, center: ImageFourMain, right: ImageFive },
-  { left: ImageFour, center: ImageFiveMain, right: ImageOne },
+  {
+    left: ImageFive,
+    center: ImageOneMain,
+    right: ImageTwo,
+    topText: "Everyday",
+    bottomText: " Flowers",
+  },
+  {
+    left: ImageOne,
+    center: ImageTwoMain,
+    right: ImageThree,
+    topText: "The wilder",
+    bottomText: " Night",
+  },
+  {
+    left: ImageTwo,
+    center: ImageThreeMain,
+    right: ImageFour,
+    topText: "Smooth",
+    bottomText: "Memories",
+  },
+  {
+    left: ImageThree,
+    center: ImageFourMain,
+    right: ImageFive,
+    topText: "The Future",
+    bottomText: "Universe",
+  },
+  {
+    left: ImageFour,
+    center: ImageFiveMain,
+    right: ImageOne,
+    topText: "SHE Was",
+    bottomText: "Born Urban",
+  },
 ];

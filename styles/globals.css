@@ -69,3 +69,18 @@ body {
   -webkit-text-stroke: 2px rgb(253, 253, 253);
   color: transparent;
 }
+
+.hero--secondary {
+  --mask: radial-gradient(
+    circle at var(--x, 70%) var(--y, 80%),
+    black 25%,
+    transparent 0
+  );
+
+  width: 100%;
+  height: 100%;
+
+  color: rgb(255, 255, 255);
+  -webkit-mask-image: var(--mask);
+  mask-image: var(--mask);
+}

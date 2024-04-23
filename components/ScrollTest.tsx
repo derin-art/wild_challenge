@@ -126,7 +126,7 @@ export default function ScrollTest() {
 
       setScrollDir((prev) => {
         if (scrollY / cotainerRef.current.scrollHeight > 8.5) {
-          return { art: "scrolling down", reg: "scrolling up" };
+          return { art: "scrolling up", reg: "scrolling up" };
         }
         return prev;
       });
@@ -263,8 +263,38 @@ export default function ScrollTest() {
       ref={cotainerRef}
       className="flex w-fit containerr scrollbar-alt scrollbar"
     >
-      <div className="w-screen  h-screen overflow-y-hidden scrollbar-alt scrollbar absolute z-30 flex items-center justify-center overflow-hidden">
-        <div className="absolute top-[10px] right-[40px] text-black">
+      <AnimatePresence>
+        {ImageArray.map((item, index) => {
+          if (index + 1 === inViewImages.now) {
+            return (
+              <motion.div
+                initial={{ opacity: 0.5 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0.5 }}
+                transition={{ duration: 0.3 }}
+                key={inViewImages.now + `${index}+bg`}
+                className="w-screen h-screen absolute z-0  overflow-hidden "
+              >
+                <motion.img
+                  className="w-full image-center "
+                  src={item.center.src}
+                ></motion.img>
+              </motion.div>
+            );
+          }
+        })}
+      </AnimatePresence>
+      <div className="absolute flex items-center justify-center w-screen h-screen text-center">
+        <div className="absolute font-tung text-[220px] z-40 uppercase text-white outline_text">
+          {imageAssets[0].name}
+        </div>
+        <div className="absolute font-tung text-[220px] z-20 uppercase text-white ">
+          {imageAssets[0].name}
+        </div>
+      </div>
+      <div className="w-screen h-screen backdrop-blur-lg z-10"></div>
+      <div className="w-screen z-30  h-screen overflow-y-hidden scrollbar-alt scrollbar absolute z-30 flex items-center justify-center overflow-hidden">
+        <div className="absolute top-[10px] right-[40px] text-red-500">
           {scrollDir.reg}
           {scrollDir.art}
         </div>
@@ -276,7 +306,7 @@ export default function ScrollTest() {
                   index === 1 ? "w-[512px] h-[680px]" : "w-[248px] h-[330px] "
                 }  z-30 mx-auto ${
                   assets[index].style
-                } absolute overflow-hidden rounded-[10px]`}
+                } absolute overflow-hidden rounded-[10px] 2xl:scale-[1] scale-[0.8]`}
                 key={inViewImages.now + `${index}+2`}
               >
                 <motion.img
@@ -326,7 +356,7 @@ export default function ScrollTest() {
         return (
           <div
             key={index}
-            className={`bg-blue-400  box w-screen hideScroll h-screen flex items-center justify-center`}
+            className={`  box w-screen hideScroll h-screen flex items-center justify-center`}
           >
             <motion.div
               key={index}

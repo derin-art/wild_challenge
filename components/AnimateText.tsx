@@ -15,7 +15,7 @@ export default function AnimateText(props: AnimateTextProps) {
           <motion.div
             initial={{ y: "100%" }}
             animate={{ y: "0%" }}
-            exit={{ y: "-120%" }}
+            exit={{ y: "-120%", transition: { duration: 0.5 } }}
             transition={{ duration: 1, ease: [0.25, 1, 0.3, 1] }}
             className="h-[176px]"
           >
@@ -26,7 +26,7 @@ export default function AnimateText(props: AnimateTextProps) {
           <motion.div
             initial={{ y: "100%" }}
             animate={{ y: "0%" }}
-            exit={{ y: "-120%" }}
+            exit={{ y: "-120%", transition: { duration: 0.2 } }}
             transition={{ duration: 0.5, ease: [0.25, 1, 0.3, 1] }}
             className="h-[176px]"
           >

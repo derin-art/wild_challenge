@@ -280,7 +280,7 @@ export default function Gallery(props: GalleryProps) {
                   src={renderCorrectImage(index, props.inViewImages.now)?.src}
                   key={props.inViewImages.now + `${index}`}
                   transition={{
-                    duration: 0.4 * (4 - 0.3 * index),
+                    duration: 0.4 * (4 - 0.6 * index),
 
                     ease: [0.5, 1, 0.3, 1],
                   }}

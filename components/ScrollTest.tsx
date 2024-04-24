@@ -1,6 +1,6 @@
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import ScrollIndicatorMouse from "./ScrollIndicatorMouse";
-import { AnimatePresence, motion, useScroll } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { gsap } from "gsap";
 import ImageArray from "./ImageArray";
 import AnimateText from "./AnimateText";
@@ -24,8 +24,6 @@ export default function ScrollTest() {
   const [innerWidth, setInnerWidth] = useState(0);
   const cotainerRef: any = useRef();
 
-  const [ScrollProgress, setScrollProgress] = useState(0);
-
   const displayedImages = [
     { number: 1, style: "top-[16px] right-[16px]" },
     { number: 2, style: " " },
@@ -44,6 +42,7 @@ export default function ScrollTest() {
     let ticking = false;
 
     /* updateScrollDir updates the scroll direction and determines the type of animation with which the images exit or enter the gallery based on the scroll direction */
+
     const updateScrollDir = () => {
       const scrollY = window.scrollY;
 
@@ -53,7 +52,7 @@ export default function ScrollTest() {
       }
 
       /* Max scrollRatioComplete is 9. Determined from the gsap animation which is set at 900% or 
-      9 * container height to move 
+      ;(9 * container height) to move 
       from the first to the last item in the gallery */
 
       const scrollRatioComplete = scrollY / cotainerRef.current.scrollHeight;
@@ -72,9 +71,6 @@ export default function ScrollTest() {
       if (scrollRatioComplete > 8.5) {
         finalObject = { modified: "scrolling up", regular: "scrolling up" };
       }
-
-      /* Updates Scroll Indicator for Mouse */
-      setScrollProgress(scrollRatioComplete / 9);
 
       setScrollDir(finalObject);
 
@@ -173,7 +169,9 @@ export default function ScrollTest() {
     >
       <div className="absolute left-[40px] top-[40px] z-50">
         <ScrollIndicatorMouse
-          scrollXProgress={ScrollProgress}
+          scrollHeight={
+            typeof window === "undefined" ? 1000 : window.innerHeight
+          }
         ></ScrollIndicatorMouse>
       </div>
       <div className="w-screen h-screen backdrop-blur-[40px] z-10"></div>

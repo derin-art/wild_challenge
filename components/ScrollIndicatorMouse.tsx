@@ -1,12 +1,13 @@
-import { useEffect, useRef, useLayoutEffect } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { motion, useScroll } from "framer-motion";
 import gsap from "gsap";
 
 interface ScrollIndicatorMouseProps {
-  scrollXProgress: any;
+  scrollHeight: number;
 }
 
 export default function ScrollIndicatorMouse(props: ScrollIndicatorMouseProps) {
+  const { scrollY } = useScroll();
   const cursorRef = useRef(null);
   const ctx1: any = useRef(null);
   const cursorSize = 30;
@@ -26,8 +27,8 @@ export default function ScrollIndicatorMouse(props: ScrollIndicatorMouseProps) {
         ease: "power3",
       });
       self.add("mouseMove", (x: any, y: any) => {
-        xTo(x - 50);
-        yTo(y - 50);
+        xTo(x - 75);
+        yTo(y - 75);
       });
       const scaleTween = gsap
         .to(cursorRef.current, {
@@ -66,7 +67,7 @@ export default function ScrollIndicatorMouse(props: ScrollIndicatorMouseProps) {
           className="indicator fill-none absolute"
           initial={{ pathLength: 0 }}
           transition={{ duration: 0.3 }}
-          animate={{ pathLength: props.scrollXProgress }}
+          animate={{ pathLength: scrollY.get() / props.scrollHeight / 9 }}
         />
         <motion.circle
           cx="50"

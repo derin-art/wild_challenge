@@ -14,10 +14,10 @@ export default function ArtistLink(props: ArtistLinkProps) {
           <span className=" overflow-hidden flex gap-x-1">
             for{"  "}
             <motion.div
-              animate={{ y: 0 }}
+              animate={{ y: 0, x: 0 }}
               initial={{ y: "100%" }}
               exit={{ y: "-100%" }}
-              transition={{ duration: 0.3, ease: [0.25, 1, 0.5, 1] }}
+              transition={{ duration: 0.5, ease: [0.25, 1, 0.5, 1] }}
               className=" tracking-[0.08em] h-[12px] "
             >
               {ImageArray[props.inViewImage].client}
@@ -27,10 +27,10 @@ export default function ArtistLink(props: ArtistLinkProps) {
         <div className=" overflow-hidden ">
           {" "}
           <motion.div
-            animate={{ y: 0 }}
+            animate={{ y: 0, x: 0 }}
             initial={{ y: "100%" }}
             exit={{ y: "-100%" }}
-            transition={{ duration: 0.3, ease: [0.25, 1, 0.5, 1] }}
+            transition={{ duration: 0.5, ease: [0.25, 1, 0.5, 1], delay: 0.1 }}
             className="text-right tracking-[0.08em] h-[12px] "
           >
             {ImageArray[props.inViewImage].date}

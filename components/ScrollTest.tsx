@@ -43,6 +43,7 @@ export default function ScrollTest() {
     let lastScrollY = window.scrollY;
     let ticking = false;
 
+    /* updateScrollDir updates the scroll direction and determines the type of animation with which the images exit or enter the gallery based on the scroll direction */
     const updateScrollDir = () => {
       const scrollY = window.scrollY;
 
@@ -51,7 +52,9 @@ export default function ScrollTest() {
         return;
       }
 
-      /* Max scrollRatioComplete is 9. */
+      /* Max scrollRatioComplete is 9. Determined from the gsap animation which is set at 900% or 
+      9 * container height to move 
+      from the first to the last item in the gallery */
 
       const scrollRatioComplete = scrollY / cotainerRef.current.scrollHeight;
 

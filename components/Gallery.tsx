@@ -18,7 +18,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 import { useState, useEffect, useLayoutEffect, useRef } from "react";
 
-export default function ScrollTest(props: GalleryProps) {
+export default function Gallery(props: GalleryProps) {
   const [scrollDir, setScrollDir] = useState({
     regular: "scrolling down",
     modified: "scrolling down",

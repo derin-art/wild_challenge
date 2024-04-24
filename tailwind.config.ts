@@ -15,6 +15,8 @@ const config: Config = {
       },
       fontFamily: {
         tung: ["Tung", "sans"],
+        helv: ["Helv", "sans"],
+        helvBold: ["HelvBold", "sans"],
       },
     },
   },

@@ -1,8 +1,10 @@
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-import { AnimatePresence, motion } from "framer-motion";
+import ScrollIndicatorMouse from "./ScrollIndicatorMouse";
+import { AnimatePresence, motion, useScroll } from "framer-motion";
 import { gsap } from "gsap";
 import ImageArray from "./ImageArray";
 import AnimateText from "./AnimateText";
+import PageIndicator from "./PageIndicator";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -10,8 +12,8 @@ import { useState, useEffect, useLayoutEffect, useRef } from "react";
 
 export default function ScrollTest() {
   const [inViewImages, setInViewImages] = useState({
-    now: 1,
-    prev: 5,
+    now: 0,
+    prev: 4,
   });
 
   const [scrollDir, setScrollDir] = useState({
@@ -20,27 +22,18 @@ export default function ScrollTest() {
   });
 
   const [innerWidth, setInnerWidth] = useState(0);
+  const cotainerRef: any = useRef();
+
+  const [ScrollProgress, setScrollProgress] = useState(0);
 
   const imageStyling = [
-    { number: 1, style: "top-[16px] right-[32px]" },
+    { number: 1, style: "top-[16px] right-[16px]" },
     { number: 2, style: " " },
     { number: 3, style: "bottom-[16px] left-[16px]" },
   ];
 
-  const cotainerRef: any = useRef();
-
   const updateViewPort = (galleryNumber: number) => {
     setInViewImages((prev) => {
-      /*      if (prev.now === 5 && galleryNumber === 1) {
-        setScrollDir((previ) => {
-          return { art: "scrolling down", reg: previ.reg };
-        });
-      }
-      if (prev.now === 1 && galleryNumber === 5) {
-        setScrollDir((previ) => {
-          return { art: "scrolling up", reg: previ.reg };
-        });
-      } */
       return { now: galleryNumber, prev: prev.now };
     });
   };
@@ -68,17 +61,9 @@ export default function ScrollTest() {
       if (scrollY / cotainerRef.current.scrollHeight > 8.5) {
         finalObject = { art: "scrolling up", reg: "scrolling up" };
       }
+      setScrollProgress(lastScrollY / cotainerRef.current.scrollHeight / 9);
       setScrollDir(finalObject);
 
-      /*     setScrollDir((prev) => {
-        if (scrollY / cotainerRef.current.scrollHeight > 8.5) {
-          console.log("Yess Mann");
-          return { art: "scrolling up", reg: "scrolling up" };
-        }
-
-        return prev;
-      });
- */
       lastScrollY = scrollY > 0 ? scrollY : 0;
       ticking = false;
     };
@@ -153,6 +138,7 @@ export default function ScrollTest() {
     return () => ctx.revert();
   }, [innerWidth]);
 
+  /* Selects the images to render from the Image Array */
   const renderCorrectImage = (imageIndex: number, pageNumber: number) => {
     if (imageIndex === 0) {
       return ImageArray[pageNumber].right;
@@ -167,19 +153,25 @@ export default function ScrollTest() {
   return (
     <div
       ref={cotainerRef}
-      className="flex w-fit containerr scrollbar-alt scrollbar"
+      className="flex w-fit containerr scrollbar-alt scrollbar cursor-none"
     >
+      <div className="absolute left-[40px] top-[40px] z-50">
+        <ScrollIndicatorMouse
+          scrollXProgress={ScrollProgress}
+        ></ScrollIndicatorMouse>
+      </div>
       <div className="w-screen h-screen backdrop-blur-[40px] z-10"></div>
       {/* Background Blurry Image */}
+
       <AnimatePresence>
         {ImageArray.map((item, index) => {
           if (index === inViewImages.now) {
             return (
               <motion.div
-                initial={{ opacity: 0.5 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0.5 }}
-                transition={{ duration: 0.3 }}
+                initial={{ opacity: 0.5, scale: 2 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0.5, scale: 2 }}
+                transition={{ duration: 1.3, ease: [0.25, 1, 0.5, 1] }}
                 key={inViewImages.now + `${index}+bg`}
                 className="w-screen h-screen absolute z-0  overflow-hidden flex items-center justify-center "
               >
@@ -195,7 +187,7 @@ export default function ScrollTest() {
 
       {/* Outlined Image Title */}
       <div className="absolute flex items-center justify-center w-screen h-screen ">
-        <div className="z-40">
+        <div className="z-40 mb-[16px]">
           <AnimateText
             bottomText={
               <div className="h-[176px]  flex items-center justify-center ">
@@ -221,6 +213,7 @@ export default function ScrollTest() {
       {/* Displayed Images in the Gallery */}
       <div className="w-screen z-30  h-screen overflow-y-hidden scrollbar-alt scrollbar absolute z-30 flex items-center justify-center overflow-hidden">
         <div className="absolute top-[10px] right-[40px] text-red-500 z-50">
+          {ScrollProgress}
           {inViewImages.now}
           {scrollDir.reg}
           {scrollDir.art}
@@ -233,71 +226,83 @@ export default function ScrollTest() {
                   index === 1 ? "w-[512px] h-[680px] " : "w-[248px] h-[330px] "
                 }  z-30 mx-auto ${
                   item.style
-                } absolute overflow-hidden rounded-[10px]  flex items-center justify-center`}
+                } absolute overflow-hidden rounded-[10px]  flex flex-col items-center justify-center`}
                 key={inViewImages.now + `${index}+2`}
               >
                 <div
                   className={`${
                     index != 1 && "hidden"
-                  } absolute z-40 w-screen h-screen flex items-center justify-center`}
+                  } absolute z-40 w-screen h-screen flex flex-col items-center justify-center`}
                 >
-                  <AnimateText
-                    bottomText={
-                      <div className="h-[176px]  flex items-center justify-center w-full ">
-                        {" "}
-                        <div className=" font-tung text-[220px] z-40 uppercase text-white  tracking-[0.04em]">
-                          {ImageArray[inViewImages.now].bottomText}
+                  <div className="">
+                    <AnimateText
+                      bottomText={
+                        <div className="h-[176px]  flex items-center justify-center w-full ">
+                          {" "}
+                          <div className=" font-tung text-[220px] z-40 uppercase text-white  tracking-[0.04em]">
+                            {ImageArray[inViewImages.now].bottomText}
+                          </div>
                         </div>
-                      </div>
-                    }
-                    activeImage={inViewImages.now.toString()}
-                    topText={
-                      <div className="h-[176px] flex items-center justify-center w-full ">
-                        {" "}
-                        <div className=" font-tung text-[220px] z-20 uppercase text-white tracking-[0.04em]  ">
-                          {ImageArray[inViewImages.now].topText}
+                      }
+                      activeImage={inViewImages.now.toString()}
+                      topText={
+                        <div className="h-[176px] flex items-center justify-center w-full ">
+                          {" "}
+                          <div className=" font-tung text-[220px] z-20 uppercase text-white tracking-[0.04em]  ">
+                            {ImageArray[inViewImages.now].topText}
+                          </div>
                         </div>
-                      </div>
-                    }
-                  ></AnimateText>
+                      }
+                    ></AnimateText>
+                  </div>
+                  <div className="mt-[8px]">
+                    {" "}
+                    <PageIndicator
+                      selectedPage={inViewImages.now}
+                    ></PageIndicator>
+                  </div>
                 </div>
+
                 <motion.img
                   src={renderCorrectImage(index, inViewImages.now)?.src}
                   key={inViewImages.now + `${index}`}
                   transition={{
-                    duration: 0.2 * (4 - index),
+                    duration: 0.4 * (4 - 1.3 * index),
 
-                    ease: [0.345, 0.045, 0.355, 1],
+                    ease: [0.5, 1, 0.3, 1],
                   }}
                   initial={
                     scrollDir.art === "scrolling down"
                       ? { x: 400, y: -400 }
-                      : { x: -400, y: 400 }
+                      : {
+                          x: index === 1 ? -500 : -400,
+                          y: index === 1 ? 500 : 400,
+                        }
                   }
                   animate={{ x: 0, y: 0 }}
                   exit={
                     scrollDir.reg === "scrolling down"
                       ? {
-                          x: "-100%",
+                          x: "-120%",
                           y: "50%",
 
                           transition: {
-                            duration: 0.2 * (2 + index),
+                            duration: 0.42 * (1.5 + index),
 
-                            ease: [0.345, 0.045, 0.355, 1],
+                            ease: [0.5, 1, 0.3, 1],
                           },
                         }
                       : {
-                          x: "100%",
+                          x: "120%",
                           y: "-50%",
                           transition: {
-                            duration: 0.2 * (index + 2),
+                            duration: 0.42 * (index + 1.5),
 
-                            ease: [0.345, 0.045, 0.355, 1],
+                            ease: [0.5, 1, 0.3, 1],
                           },
                         }
                   }
-                  className={` w-fit z-30 mx-auto  absolute `}
+                  className={` w-fit z-30 mx-auto  absolute rounded-[10px] border border-black`}
                 ></motion.img>
               </motion.div>
             );
@@ -317,7 +322,7 @@ export default function ScrollTest() {
               onViewportEnter={() => {
                 updateViewPort(index);
               }}
-              className="w-[10px] h-[400px] bg-red-500"
+              className="w-[1px] h-[400px] bg-red-500"
             ></motion.div>
           </div>
         );

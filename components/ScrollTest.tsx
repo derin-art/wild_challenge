@@ -181,10 +181,10 @@ export default function ScrollTest() {
           if (index === inViewImages.now) {
             return (
               <motion.div
-                initial={{ opacity: 0.5, scale: 2 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0.5, scale: 2 }}
-                transition={{ duration: 1.3, ease: [0.25, 1, 0.5, 1] }}
+                initial={{ scale: 2 }}
+                animate={{ scale: 1 }}
+                exit={{ scale: 2 }}
+                transition={{ duration: 0.6, ease: [0.25, 1, 0.5, 1] }}
                 key={inViewImages.now + `${index}+bg`}
                 className="w-screen h-screen absolute z-0  overflow-hidden flex items-center justify-center "
               >

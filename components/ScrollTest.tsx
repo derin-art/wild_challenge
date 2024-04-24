@@ -17,8 +17,8 @@ export default function ScrollTest() {
   });
 
   const [scrollDir, setScrollDir] = useState({
-    reg: "scrolling down",
-    art: "scrolling down",
+    regular: "scrolling down",
+    modified: "scrolling down",
   });
 
   const [innerWidth, setInnerWidth] = useState(0);
@@ -26,7 +26,7 @@ export default function ScrollTest() {
 
   const [ScrollProgress, setScrollProgress] = useState(0);
 
-  const imageStyling = [
+  const displayedImages = [
     { number: 1, style: "top-[16px] right-[16px]" },
     { number: 2, style: " " },
     { number: 3, style: "bottom-[16px] left-[16px]" },
@@ -51,17 +51,28 @@ export default function ScrollTest() {
         return;
       }
 
-      let finalObject =
-        scrollY / cotainerRef.current.scrollHeight < 0.3
-          ? { art: "scrolling up", reg: "scrolling down" }
-          : scrollY > lastScrollY
-          ? { art: "scrolling down", reg: "scrolling down" }
-          : { art: "scrolling up", reg: "scrolling up" };
+      /* Max scrollRatioComplete is 9. */
 
-      if (scrollY / cotainerRef.current.scrollHeight > 8.5) {
-        finalObject = { art: "scrolling up", reg: "scrolling up" };
+      const scrollRatioComplete = scrollY / cotainerRef.current.scrollHeight;
+
+      /*A modified and regular state for the Scroll direction is necessary because the scrollY and lastScrollY
+       return values during the exit and enter animation when completing the scroll length of
+       the gallery and returning to the beginning of the gallery   */
+
+      let finalObject =
+        scrollRatioComplete < 0.3
+          ? { modified: "scrolling up", regular: "scrolling down" }
+          : scrollY > lastScrollY
+          ? { modified: "scrolling down", regular: "scrolling down" }
+          : { modified: "scrolling up", regular: "scrolling up" };
+
+      if (scrollRatioComplete > 8.5) {
+        finalObject = { modified: "scrolling up", regular: "scrolling up" };
       }
-      setScrollProgress(lastScrollY / cotainerRef.current.scrollHeight / 9);
+
+      /* Updates Scroll Indicator for Mouse */
+      setScrollProgress(scrollRatioComplete / 9);
+
       setScrollDir(finalObject);
 
       lastScrollY = scrollY > 0 ? scrollY : 0;
@@ -108,9 +119,11 @@ export default function ScrollTest() {
         scrollTrigger: {
           trigger: ".containerr",
           pin: true,
+
           scrub: true,
           markers: true,
           end: "+=900%",
+
           invalidateOnRefresh: true,
         },
       });
@@ -212,14 +225,8 @@ export default function ScrollTest() {
 
       {/* Displayed Images in the Gallery */}
       <div className="w-screen z-30  h-screen overflow-y-hidden scrollbar-alt scrollbar absolute z-30 flex items-center justify-center overflow-hidden">
-        <div className="absolute top-[10px] right-[40px] text-red-500 z-50">
-          {ScrollProgress}
-          {inViewImages.now}
-          {scrollDir.reg}
-          {scrollDir.art}
-        </div>
         <AnimatePresence>
-          {imageStyling.map((item, index) => {
+          {displayedImages.map((item, index) => {
             return (
               <motion.div
                 className={` ${
@@ -255,6 +262,8 @@ export default function ScrollTest() {
                       }
                     ></AnimateText>
                   </div>
+
+                  {/* Page Indicator */}
                   <div className="mt-[8px]">
                     {" "}
                     <PageIndicator
@@ -272,7 +281,7 @@ export default function ScrollTest() {
                     ease: [0.5, 1, 0.3, 1],
                   }}
                   initial={
-                    scrollDir.art === "scrolling down"
+                    scrollDir.modified === "scrolling down"
                       ? { x: 400, y: -400 }
                       : {
                           x: index === 1 ? -500 : -400,
@@ -281,7 +290,7 @@ export default function ScrollTest() {
                   }
                   animate={{ x: 0, y: 0 }}
                   exit={
-                    scrollDir.reg === "scrolling down"
+                    scrollDir.regular === "scrolling down"
                       ? {
                           x: "-120%",
                           y: "50%",

@@ -280,7 +280,7 @@ export default function ScrollTest(props: GalleryProps) {
                   src={renderCorrectImage(index, props.inViewImages.now)?.src}
                   key={props.inViewImages.now + `${index}`}
                   transition={{
-                    duration: 0.4 * (4 - 1.3 * index),
+                    duration: 0.4 * (4 - 0.3 * index),
 
                     ease: [0.5, 1, 0.3, 1],
                   }}
@@ -335,7 +335,7 @@ export default function ScrollTest(props: GalleryProps) {
               onViewportEnter={() => {
                 updateViewPort(index);
               }}
-              className="w-[1px] h-[400px] bg-red-500"
+              className="w-[1px] h-[400px] bg-transparent"
             ></motion.div>
           </div>
         );

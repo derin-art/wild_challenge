@@ -20,6 +20,8 @@ export default [
     right: ImageTwo,
     topText: "Everyday",
     bottomText: " Flowers",
+    date: "JUN 2019",
+    client: "Vouge",
   },
   {
     left: ImageOne,
@@ -27,6 +29,8 @@ export default [
     right: ImageThree,
     topText: "The wilder",
     bottomText: " Night",
+    date: "DEC 2019",
+    client: "WILD",
   },
   {
     left: ImageTwo,
@@ -34,6 +38,8 @@ export default [
     right: ImageFour,
     topText: "Smooth",
     bottomText: "Memories",
+    date: "FEB 2020",
+    client: "CHANEL",
   },
   {
     left: ImageThree,
@@ -41,6 +47,8 @@ export default [
     right: ImageFive,
     topText: "The Future",
     bottomText: "Universe",
+    date: "APR 2020",
+    client: "ON",
   },
   {
     left: ImageFour,
@@ -48,5 +56,7 @@ export default [
     right: ImageOne,
     topText: "SHE Was",
     bottomText: "Born Urban",
+    date: "DEC 2021",
+    client: "SI",
   },
 ];

@@ -5,17 +5,20 @@ import { gsap } from "gsap";
 import ImageArray from "./ImageArray";
 import AnimateText from "./AnimateText";
 import PageIndicator from "./PageIndicator";
+import ArtistLink from "./ArtistLink";
+
+interface GalleryProps {
+  inViewImages: { now: number; prev: number };
+  setInViewImages: React.Dispatch<
+    React.SetStateAction<{ now: number; prev: number }>
+  >;
+}
 
 gsap.registerPlugin(ScrollTrigger);
 
 import { useState, useEffect, useLayoutEffect, useRef } from "react";
 
-export default function ScrollTest() {
-  const [inViewImages, setInViewImages] = useState({
-    now: 0,
-    prev: 4,
-  });
-
+export default function ScrollTest(props: GalleryProps) {
   const [scrollDir, setScrollDir] = useState({
     regular: "scrolling down",
     modified: "scrolling down",
@@ -31,7 +34,7 @@ export default function ScrollTest() {
   ];
 
   const updateViewPort = (galleryNumber: number) => {
-    setInViewImages((prev) => {
+    props.setInViewImages((prev) => {
       return { now: galleryNumber, prev: prev.now };
     });
   };
@@ -179,14 +182,14 @@ export default function ScrollTest() {
 
       <AnimatePresence>
         {ImageArray.map((item, index) => {
-          if (index === inViewImages.now) {
+          if (index === props.inViewImages.now) {
             return (
               <motion.div
                 initial={{ scale: 2 }}
                 animate={{ scale: 1 }}
                 exit={{ scale: 2 }}
                 transition={{ duration: 0.6, ease: [0.25, 1, 0.5, 1] }}
-                key={inViewImages.now + `${index}+bg`}
+                key={props.inViewImages.now + `${index}+bg`}
                 className="w-screen h-screen absolute z-0  overflow-hidden flex items-center justify-center "
               >
                 <motion.img
@@ -207,16 +210,16 @@ export default function ScrollTest() {
               <div className="h-[176px]  flex items-center justify-center ">
                 {" "}
                 <div className=" font-tung text-[220px] z-40 uppercase text-white outline_text tracking-[0.04em]">
-                  {ImageArray[inViewImages.now].bottomText}
+                  {ImageArray[props.inViewImages.now].bottomText}
                 </div>
               </div>
             }
-            activeImage={inViewImages.now.toString()}
+            activeImage={props.inViewImages.now.toString()}
             topText={
               <div className="h-[176px] flex items-center justify-center  ">
                 {" "}
                 <div className=" font-tung text-[220px] z-20 uppercase outline_text tracking-[0.04em] ">
-                  {ImageArray[inViewImages.now].topText}
+                  {ImageArray[props.inViewImages.now].topText}
                 </div>
               </div>
             }
@@ -235,7 +238,7 @@ export default function ScrollTest() {
                 }  z-30 mx-auto ${
                   item.style
                 } absolute overflow-hidden rounded-[10px]  flex flex-col items-center justify-center`}
-                key={inViewImages.now + `${index}+2`}
+                key={props.inViewImages.now + `${index}+2`}
               >
                 <div
                   className={`${
@@ -248,16 +251,16 @@ export default function ScrollTest() {
                         <div className="h-[176px]  flex items-center justify-center w-full ">
                           {" "}
                           <div className=" font-tung text-[220px] z-40 uppercase text-white  tracking-[0.04em]">
-                            {ImageArray[inViewImages.now].bottomText}
+                            {ImageArray[props.inViewImages.now].bottomText}
                           </div>
                         </div>
                       }
-                      activeImage={inViewImages.now.toString()}
+                      activeImage={props.inViewImages.now.toString()}
                       topText={
                         <div className="h-[176px] flex items-center justify-center w-full ">
                           {" "}
                           <div className=" font-tung text-[220px] z-20 uppercase text-white tracking-[0.04em]  ">
-                            {ImageArray[inViewImages.now].topText}
+                            {ImageArray[props.inViewImages.now].topText}
                           </div>
                         </div>
                       }
@@ -268,14 +271,14 @@ export default function ScrollTest() {
                   <div className="mt-[8px]">
                     {" "}
                     <PageIndicator
-                      selectedPage={inViewImages.now}
+                      selectedPage={props.inViewImages.now}
                     ></PageIndicator>
                   </div>
                 </div>
 
                 <motion.img
-                  src={renderCorrectImage(index, inViewImages.now)?.src}
-                  key={inViewImages.now + `${index}`}
+                  src={renderCorrectImage(index, props.inViewImages.now)?.src}
+                  key={props.inViewImages.now + `${index}`}
                   transition={{
                     duration: 0.4 * (4 - 1.3 * index),
 

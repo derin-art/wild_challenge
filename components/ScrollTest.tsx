@@ -51,15 +51,15 @@ export default function ScrollTest() {
         return;
       }
 
-      /* Max scrollRatioComplete is 9. Determined from the gsap animation which is set at 900% or 
+      /* The max scrollRatioComplete is 9. Determined from the gsap horizontal scroll animation which is set at 900% or 
       ;(9 * container height) to move 
       from the first to the last item in the gallery */
 
       const scrollRatioComplete = scrollY / cotainerRef.current.scrollHeight;
 
-      /*A modified and regular state for the Scroll direction is necessary because the scrollY and lastScrollY
-       return values during the exit and enter animation when completing the scroll length of
-       the gallery and returning to the beginning of the gallery   */
+      /*A modified and regular state for the Scroll direction is necessary because the values of scrollY and lastScrollY
+       during the exit and enter animation of the images after completing the scroll length of
+       the gallery and returning to the beginning of the gallery are different   */
 
       let finalObject =
         scrollRatioComplete < 0.3
@@ -120,7 +120,7 @@ export default function ScrollTest() {
           pin: true,
 
           scrub: true,
-          markers: true,
+
           end: "+=900%",
 
           invalidateOnRefresh: true,
